@@ -2,12 +2,13 @@ import { useState } from "react"
 
 function From({toDoTasks, setToDoTasks}) {
 
+
     const[taskName, setTaskName]=useState('')
     const[taskDate, setTaskDate]=useState('')
     const[taskTime, setTaskTime]=useState('')
     const[taskInfo, setTaskInfo]=useState('')
-    // const[taskDone, setTaskDone]=useState(false)
     const[error, setError]=useState(false)
+    
 
     const generateId = ()=>{
         const random = Math.random().toString(36).substr(2)
@@ -29,6 +30,7 @@ function From({toDoTasks, setToDoTasks}) {
         setError(false)
 
         const id = generateId()
+        const taskDone = false
 
         //onClick of submit an object of task is made with all the information written
         
@@ -37,6 +39,7 @@ function From({toDoTasks, setToDoTasks}) {
             taskDate,
             taskTime,
             taskInfo,
+            taskDone,
             id    
         }
 
@@ -52,7 +55,7 @@ function From({toDoTasks, setToDoTasks}) {
     return(
         
         <div
-            className="md:w-1/3 lg:w-2/7 mx-5"
+            className="md:w-1/3 lg:w-3/12 mx-5"
         >
             <h2 className="font-black text-3xl text-center my-6 text-amber-100">
                 Add Task 
