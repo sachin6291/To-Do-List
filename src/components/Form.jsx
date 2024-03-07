@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import Error from "./Error"
 
-function From({toDoTasks, setToDoTasks}) {
+function From({toDoTasks, setToDoTasks,oneTask,setOneTask}) {
 
 
     const[taskName, setTaskName]=useState('')
@@ -8,6 +9,15 @@ function From({toDoTasks, setToDoTasks}) {
     const[taskTime, setTaskTime]=useState('')
     const[taskInfo, setTaskInfo]=useState('')
     const[error, setError]=useState(false)
+
+    useEffect(()=>{
+        if(Object.keys(oneTask).length>0){
+            setTaskName(oneTask.taskName)
+            setTaskDate(oneTask.taskDate)
+            setTaskTime(oneTask.taskTime)
+            setTaskInfo(oneTask.taskInfo)
+        }else{}
+    },[oneTask])
     
 
     const generateId = ()=>{
@@ -29,7 +39,6 @@ function From({toDoTasks, setToDoTasks}) {
 
         setError(false)
 
-        const id = generateId()
         const taskDone = false
 
         //onClick of submit an object of task is made with all the information written
@@ -39,11 +48,20 @@ function From({toDoTasks, setToDoTasks}) {
             taskDate,
             taskTime,
             taskInfo,
-            taskDone,
-            id    
+            taskDone,   
         }
 
-        setToDoTasks([...toDoTasks,obTask])
+        if(oneTask.id){
+            obTask.id = oneTask.id
+            const updatedTask = toDoTasks.map(task=> task.id === oneTask.id ? obTask : task)
+            setToDoTasks(updatedTask)
+            setOneTask({})
+        }else{
+            obTask.id = generateId() 
+            setToDoTasks([...toDoTasks,obTask])
+        }
+
+       
 
         //after saving toDoTasks clean the input
         setTaskName('')
@@ -54,25 +72,23 @@ function From({toDoTasks, setToDoTasks}) {
 
     return(
         
-        <div
-            className="md:w-1/3 lg:w-3/12 mx-5"
-        >
+        <div className="md:w-1/3 lg:w-3/12 mx-5">
             <h2 className="font-black text-3xl text-center my-6 text-amber-100">
                 Add Task 
             </h2>
+
             <form
                 onSubmit={handleSubmit}
                 className="bg-amber-300 shadow-lg rounded-lg py-10 px-5"
             >
-                <div
-                 className="mb-5"
-                >
+                {error && <Error><p>Fill in all the Camps</p></Error>
+        }
+                <div className="mb-5">
                     <label 
                         htmlFor="taskName"
                         className="block font-bold uppercase text-lg"
-                    >
-                        Task
-                    </label>
+                    >Task</label>
+
                     <input 
                         id="taskName"
                         type="text" 
@@ -83,15 +99,12 @@ function From({toDoTasks, setToDoTasks}) {
                     />
                 </div>
 
-                <div
-                 className="mb-5"
-                >
+                <div className="mb-5" >
                     <label 
                         htmlFor="taskDate"
                         className="block font-bold uppercase text-lg"
-                    >
-                        Date
-                    </label>
+                    >Date</label>
+
                     <input 
                         id="taskDate"
                         type="date" 
@@ -101,15 +114,12 @@ function From({toDoTasks, setToDoTasks}) {
                     />
                 </div>
 
-                <div
-                 className="mb-5"
-                >
+                <div className="mb-5">
                     <label 
                         htmlFor="taskTime"
                         className="block font-bold uppercase text-lg"
-                    >
-                        Time
-                    </label>
+                    >Time</label>
+
                     <input 
                         id="taskTime"
                         type="time" 
@@ -119,15 +129,12 @@ function From({toDoTasks, setToDoTasks}) {
                     />
                 </div>
 
-                <div
-                 className="mb-5"
-                >
+                <div className="mb-5">
                     <label 
                         htmlFor="taskInfo"
                         className="block font-bold uppercase text-lg"
-                    >
-                        Aditional information
-                    </label>
+                    >Aditional inaformation</label>
+
                     <textarea 
                         id="taskInfo" 
                         className="w-full p-1 mt-2 rounded-md"
@@ -150,7 +157,7 @@ function From({toDoTasks, setToDoTasks}) {
                     uppercase
                     hover:cursor-pointer
                     "
-                    value="Add Task"
+                    value={oneTask.id?"Edit Task":"Add Task"}
                 />
                 
             </form>

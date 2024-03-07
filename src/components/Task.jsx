@@ -1,7 +1,9 @@
-function Task({task, deletTask,doneTask}) {
-    // console.log(task)
+function Task({task, deletTask,doneTask, setOneTask}) {
+    console.log(task)
+    // destructuring task
     const{taskName, taskDate, taskTime, taskInfo, taskDone, id}=task
 
+    //double check before Delete and use the function deleteTask from app.jsx
     const handleDelete = ()=>{
         const doubleCheck = confirm('Are you shure you want to delete this task?')
         if (doubleCheck){
@@ -31,16 +33,16 @@ function Task({task, deletTask,doneTask}) {
                 <button
                     type="button"
                     onClick={handleDone}
-                    className="bg-gradient-to-br from-teal-500 to-cyan-700 hover:bg-gradient-to-tl py-2 md:px-3 px-10 rounded-md text-white font-bold uppercase"
+                    className="bg-gradient-to-br from-teal-500 to-cyan-700 hover:bg-gradient-to-tl py-2 md:px-3 lg:px-10 px-6 rounded-md text-white font-bold uppercase"
                 >Done</button>
                 <button
                     type="button"
-                    className="bg-gradient-to-br from-cyan-500 to-blue-600 hover:bg-gradient-to-tl py-2 md:px-3 px-10 rounded-md text-white font-bold uppercase"
-                    
+                    className="bg-gradient-to-br from-cyan-500 to-blue-600 hover:bg-gradient-to-tl py-2 md:px-3 lg:px-10 px-7 rounded-md text-white font-bold uppercase"
+                    onClick={()=>setOneTask(task)}
                 >Edit</button>
                 <button
                     type="button"
-                    className="bg-gradient-to-br from-red-600 to-red-800 hover:bg-gradient-to-tl py-2 md:px-3 px-10 rounded-md text-white font-bold uppercase"
+                    className="bg-gradient-to-br from-red-600 to-red-800 hover:bg-gradient-to-tl py-2 md:px-3 lg:px-10 px-6 rounded-md text-white font-bold uppercase"
                     onClick={handleDelete}
                 >Delete</button>
             </div>

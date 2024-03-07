@@ -1,25 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import List from './components/List'
 import From from './components/Form'
 import Header from './components/Header'
 import DoneList from './components/DoneList'
 
 
+
 function App() {
 
-  const[toDoTasks, setToDoTasks]=useState([])
+  const[toDoTasks, setToDoTasks]=useState(JSON.parse(localStorage.getItem('toDoTasks'))??[])
 
   const[taskDone, setTaskDone]=useState([])
+
+  const[oneTask, setOneTask]=useState({})
+
+  useEffect(()=>{
+    localStorage.setItem('toDoTasks',JSON.stringify(toDoTasks))
+  },[toDoTasks])
 
   const deletTask =(id)=>{
     const remainingTask = toDoTasks.filter((task)=>task.id !== id)
     setToDoTasks(remainingTask)
   }
   const doneTask =(id)=>{
-    const remainingTask = toDoTasks.filter((task)=>task.id === id)
-    remainingTask.map((task)=>{
-      task.taskDone=true 
-      setTaskDone([...taskDone, task])
+    const finishedTask = toDoTasks.filter((task)=>task.id === id)
+      finishedTask.map((task)=>{
+        task.taskDone=true 
+        setTaskDone([...taskDone, task])
     })
     
     
@@ -37,11 +44,14 @@ function App() {
           <From
             toDoTasks={toDoTasks}
             setToDoTasks={setToDoTasks}
+            oneTask={oneTask}
+            setOneTask={setOneTask}
           />
           <List
             toDoTasks={toDoTasks}
             deletTask={deletTask}
             doneTask={doneTask}
+            setOneTask={setOneTask}
           />
           <DoneList
             taskDone={taskDone}
